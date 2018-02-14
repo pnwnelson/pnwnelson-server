@@ -1,0 +1,64 @@
+const express = require('express')
+const nodemailer = require('nodemailer')
+const bodyParser = require('body-parser')
+const app  = express()
+const router = express.Router()
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+app.use(express.static(__dirname + '../public'))
+
+/* ---------------- STARTED middleware to log all traffic ----------------*/
+app.use(function(req, res, next) {
+	console.log('Something is happening')
+	res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next() // goes to the next route
+})
+/* ---------------- STOPPED middleware for all traffic ----------------*/
+
+/* ---------------- STARTED initial load ----------------*/
+app.get('/', function(req, res, next) {
+	res.json({ message: 'Server is ready to fetch from contact page'})
+	console.log('Ready to fetch')
+})
+/* ---------------- STOPPED initial load ----------------*/
+
+/* ---------------- STARTED api to send email with nodemailer ----------------*/
+app.post('/sendmail', function(req, res, next) {
+	console.log('fetch received by server')
+	// nodemailer code here. This code successfully sends email when placed outside of a function.
+	let transporter = nodemailer.createTransport({
+		host: 'mail.name.com',
+		auth: {
+			user: 'kelly@pnwnelson.com',
+			pass: 'Solo1234'
+		}
+	})
+
+	let mailOptions = {
+		from: req.body.email,
+		to: 'nelson20@gmail.com',
+		subject: 'Website Contact Form',
+		text: req.body.name + ' says ' + req.body.text
+	}
+
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			return console.log(error);
+		} else
+		console.log('Message %s sent: %s', info.messageId, info.response);
+	})
+});
+
+/* ---------------- STOPPED api to send email with nodemailer ----------------*/
+
+app.set('port',(process.env.PORT || 3001))
+
+app.listen(app.get('port'), () => {
+	console.log(`Find the server at: http://localhost:${app.get('port')}/`)
+})
+
+console.log("The express server is running");
+

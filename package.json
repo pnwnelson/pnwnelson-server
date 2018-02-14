@@ -1,0 +1,20 @@
+{
+  "name": "pnwnelson-server",
+  "version": "1.0.0",
+  "description": "Express server for pnwnelson.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Kelly Nelson",
+  "license": "ISC",
+  "engines": {
+    "node": "6.2.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "nodemailer": "^4.4.2"
+  }
+}
