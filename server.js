@@ -28,7 +28,7 @@ app.get('/', function(req, res, next) {
 /* ---------------- STOPPED initial load ----------------*/
 
 /* ---------------- STARTED api to send email with nodemailer ----------------*/
-app.post('/sendmail', function(req, res, next) {
+app.post('/sendmail', function(req, res) {
 	console.log('fetch received by server')
 	// nodemailer code here. This code successfully sends email when placed outside of a function.
 	let transporter = nodemailer.createTransport({
@@ -51,6 +51,7 @@ app.post('/sendmail', function(req, res, next) {
 			return console.log(error);
 		} else
 		console.log('Message %s sent: %s', info.messageId, info.response);
+		res.render('index');
 	})
 });
 
