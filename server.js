@@ -15,7 +15,7 @@ app.use(express.static(__dirname + "../public"));
 app.use(function(req, res, next) {
 	console.log("Something is happening");
 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-	res.header("Access-Control-Allow-Credentials", true);
+	//res.header("Access-Control-Allow-Credentials", true);
 	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
 	res.header(
 		"Access-Control-Allow-Headers",
@@ -64,7 +64,8 @@ app.post("/sendmail", function(req, res) {
 			response.json(res.message);
 		}
 		transporter.close();
-		res.render("index");
+		//res.render("index");
+		return res.end();
 	});
 });
 
