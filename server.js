@@ -57,6 +57,8 @@ app.post("/sendmail", function(req, res) {
 	};
 
 	transporter.sendMail(mailOptions, (error, info) => {
+		res.writeHead(200, { "Content-Type": "application/json" });
+		res.write(JSON.stringify({ status: "success" }));
 		if (error) {
 			return console.log(error);
 		} else {
