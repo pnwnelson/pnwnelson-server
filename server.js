@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const router = express.Router();
 const cors = require("cors");
+const request = require("request");
 
 // app.use(cors()); // this causes a "204 No Content" network response
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,6 +36,35 @@ app.get("/", function(req, res, next) {
 
 /* ---------------- STARTED api to send email with nodemailer ----------------*/
 app.post("/sendmail", cors(), function(req, res) {
+	//Recaptcha stuff : BEGIN
+	if (
+		req.body.captcha === undefined ||
+		req.body.captcha === '' ||
+		req.body.captcha === null
+		) {
+			return res.json({"success": false, "msg": "Please check the box"})
+	}
+	// Secret Key
+	const secretKey = '6LfAwSgTAAAAAEWtfueiMzYr4VFCFOePeYFb3zDB';
+
+	// Verify Google URL
+	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`;
+
+	// Make request to verify URL
+	request(verifyURL, (err, response, body) => {
+		body = JSON.parse(body);
+
+		// if not successful
+		if (body.success !== undefined && !body.success) {
+			return res.json({"success": false, "msg": "failed captcha verification"})
+		}
+
+		// if successful
+		return res.json({"success": true, "msg": "captcha passed"})
+	})
+
+	//Recaptcha stuff : END
+
 	console.log("fetch received by server: " + req);
 	// nodemailer code here. This code successfully sends email when placed outside of a function.
 	let transporter = nodemailer.createTransport({
@@ -49,7 +79,7 @@ app.post("/sendmail", cors(), function(req, res) {
 	let mailOptions = {
 		from: req.body.email,
 		to: "nelson20@gmail.com",
-		subject: "Website Contact Form",
+		subject: "Kelly Nelson Photography Contact",
 		text: req.body.name + " says " + req.body.message
 	};
 	//console.log("email contents built: " + mailOptions);
