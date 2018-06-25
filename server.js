@@ -60,7 +60,7 @@ app.post("/sendmail", cors(), function(req, res) {
 		}
 
 		// if successful
-		return res.json({"success": true, "msg": "captcha passed"})
+		return res.json("success")
 	})
 
 	//Recaptcha stuff : END
