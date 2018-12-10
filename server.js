@@ -5,6 +5,7 @@ const app = express();
 const router = express.Router();
 const cors = require("cors");
 const request = require("request");
+const dotenv = require("dotenv")
 
 // app.use(cors()); // this causes a "204 No Content" network response
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,7 +46,7 @@ app.post("/sendmail", cors(), function(req, res) {
 			return res.json({"success": false, "msg": "Please check the box"})
 	}
 	// Secret Key
-	const secretKey = '6LfAwSgTAAAAAEWtfueiMzYr4VFCFOePeYFb3zDB';
+	const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
 	// Verify Google URL
 	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`;
@@ -60,7 +61,7 @@ app.post("/sendmail", cors(), function(req, res) {
 		}
 
 		// if successful
-		return res.json("success")
+		return res.json("success") //Had to keep it only "success" - the msg was interferring with the TY redirect
 	})
 
 	//Recaptcha stuff : END
@@ -71,7 +72,7 @@ app.post("/sendmail", cors(), function(req, res) {
 		host: "mail.name.com",
 		auth: {
 			user: "kelly@pnwnelson.com",
-			pass: "Solo1234"
+			pass: process.env.EMAIL_PW
 		}
 	});
 	console.log("email creds sent");
