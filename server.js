@@ -37,6 +37,7 @@ app.get("/", function(req, res, next) {
 
 /* ---------------- STARTED api to send email with nodemailer ----------------*/
 app.post("/sendmail", cors(), function(req, res) {
+	console.log(req.body)
 	//Recaptcha stuff : BEGIN
 	if (
 		req.body.captcha === undefined ||
@@ -54,7 +55,7 @@ app.post("/sendmail", cors(), function(req, res) {
 	// Make request to verify URL
 	request(verifyURL, (err, response, body) => {
 		body = JSON.parse(body);
-
+		console.log(body)
 		// if not successful
 		if (body.success !== undefined && !body.success) {
 			return res.json({"success": false, "msg": "failed captcha verification"})
@@ -90,7 +91,7 @@ app.post("/sendmail", cors(), function(req, res) {
 
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
-			return console.log(error);
+			return res.json(error) && console.error(error) 
 		} else {
 			console.log(info);
 			res.json("success");
