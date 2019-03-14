@@ -70,7 +70,7 @@ app.post("/sendmail", cors(), function(req, res) {
 	// nodemailer code here. This code successfully sends email when placed outside of a function.
 	const emailPassword = process.env.EMAIL_PW
 	const emailFrom = process.env.EMAIL_FROM
-	const emailTo = process.env.EMAIL_TO
+	
 	let transporter = nodemailer.createTransport({
 		host: "mail.name.com",
 		auth: {
@@ -79,8 +79,9 @@ app.post("/sendmail", cors(), function(req, res) {
 		}
 	});
 	console.log("email creds sent: " + emailFrom + ":" + emailPassword);
-	console.log("email sent to: " + emailto)
+	console.log("email sent to: " + emailTo)
 
+	const emailTo = process.env.EMAIL_TO
 	let mailOptions = {
 		from: req.body.email,
 		to: emailTo,
