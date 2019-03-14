@@ -68,19 +68,21 @@ app.post("/sendmail", cors(), function(req, res) {
 
 	console.log("fetch received by server: " + req);
 	// nodemailer code here. This code successfully sends email when placed outside of a function.
-	const email_pw = process.env.EMAIL_PW
+	const emailPassword = process.env.EMAIL_PW
+	const emailFrom = process.env.EMAIL_FROM
+	const emailTo = process.env.EMAIL_TO
 	let transporter = nodemailer.createTransport({
 		host: "mail.name.com",
 		auth: {
-			user: "kelly@pnwnelson.com",
-			pass: email_pw
+			user: emailFrom,
+			pass: emailPassword
 		}
 	});
 	console.log("email creds sent");
 
 	let mailOptions = {
 		from: req.body.email,
-		to: "nelson20@gmail.com",
+		to: emailTo,
 		subject: "Kelly Nelson Photography Contact",
 		text: req.body.name + " says " + req.body.message
 	};
