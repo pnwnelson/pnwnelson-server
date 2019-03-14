@@ -79,9 +79,9 @@ app.post("/sendmail", cors(), function(req, res) {
 		}
 	});
 	console.log("email creds sent: " + emailFrom + ":" + emailPassword);
-	console.log("email sent to: " + emailTo)
 
 	const emailTo = process.env.EMAIL_TO
+	console.log("email sending to: " + emailTo)
 	let mailOptions = {
 		from: req.body.email,
 		to: emailTo,
